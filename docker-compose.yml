@@ -1,0 +1,20 @@
+# ============================================================
+# docker-compose.yml — Запускает только бота (SQLite встроен)
+# База данных: data/modbot.db — файл на хосте, монтируется в контейнер
+# Запуск: docker compose up -d
+# ============================================================
+
+version: "3.9"
+
+services:
+
+  # ── Discord-бот ─────────────────────────────────────────────
+  bot:
+    build: .
+    container_name: modbot_bot
+    restart: unless-stopped
+    env_file:
+      - .env                          # берём DISCORD_TOKEN и OWNER_IDS из .env
+    volumes:
+      # Папка data/ монтируется с хоста — SQLite-файл сохраняется между перезапусками
+      - ./data:/app/data
